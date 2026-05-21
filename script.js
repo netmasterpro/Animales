@@ -1,28 +1,22 @@
 function sonido(nombreAnimal) {
-    // 1. REPRODUCIR EL SONIDO DEL ANIMAL (.mp3)
-    // El navegador buscará el archivo en la misma carpeta (ej: leon.mp3, perro.mp3)
-    // Se usa .toLowerCase() para asegurar que busque el archivo en minúsculas.
-    let archivoAudio = nombreAnimal.toLowerCase() + ".mp3";
-    let audio = new Audio(archivoAudio);
-    
-    audio.play().catch(error => {
-        // Este bloque evita que el código falle si aún no tienes el archivo .mp3 en tu carpeta
-        console.log("Nota: No se encontró el archivo de sonido: " + archivoAudio);
-    });
+    // Cancelamos cualquier voz activa para evitar que se encimen si hacen clics rápidos
+    window.speechSynthesis.cancel();
 
-    // 2. ACTIVAR LA VOZ TIPO GOOGLE TRADUCTOR
-    // Creamos la frase que va a decir el navegador
-    let textoAVoz = new SpeechSynthesisUtterance(nombreAnimal);
+    // Reemplazamos guiones o detalles si hiciera falta, dejando el texto limpio
+    let textoLimpio = nombreAnimal.trim();
+
+    // Creamos el objeto de voz con el nombre del animal
+    let textoAVoz = new SpeechSynthesisUtterance(textoLimpio);
     
-    // Configuramos el idioma a español
-    textoAVoz.lang = 'es-MX'; // Puedes cambiarlo a 'es-ES' si prefieres acento de España
+    // Configuración de idioma (Español Latino de Google)
+    textoAVoz.lang = 'es-MX'; 
     
-    // Velocidad del habla (1 es normal, 0.9 es un poquito más pausado para niños)
+    // Velocidad (0.9 es ideal para que los niños entiendan cada sílaba)
     textoAVoz.rate = 0.9; 
     
-    // Tono de la voz (1 es normal)
+    // Tono (1.1 lo hace sonar un poquito más animado)
     textoAVoz.pitch = 1.1; 
 
-    // Ordenamos al navegador que hable
+    // Ejecuta la voz
     window.speechSynthesis.speak(textoAVoz);
 }
